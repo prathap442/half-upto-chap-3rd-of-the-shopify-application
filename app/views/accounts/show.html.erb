@@ -4,12 +4,14 @@
 </div>
 
 <dl class="dl-horizontal">
-  <dt><strong><%= model_class.human_attribute_name(:shopify_account_urlL) %>:</strong></dt>
-  <dd><%= @account.shopify_account_urlL %></dd>
-  <dt><strong><%= model_class.human_attribute_name(:shopify_api_key) %>:</strong></dt>
-  <dd><%= @account.shopify_api_key %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:shopify_account_url) %>:</strong></dt>
+  <dd><%= @account.shopify_account_url %></dd>
   <dt><strong><%= model_class.human_attribute_name(:shopify_shared_secret) %>:</strong></dt>
   <dd><%= @account.shopify_shared_secret %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:shopify_api_key) %>:</strong></dt>
+  <dd><%= @account.shopify_api_key %></dd>
+  <dt><strong><%= model_class.human_attribute_name(:shopify_password) %>:</strong></dt>
+  <dd><%= @account.shopify_password %></dd>
 </dl>
 
 <%= link_to t('.back', :default => t("helpers.links.back")),

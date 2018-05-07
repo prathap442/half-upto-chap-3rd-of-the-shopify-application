@@ -3,9 +3,10 @@ require 'rails_helper'
 RSpec.describe "accounts/edit", type: :view do
   before(:each) do
     @account = assign(:account, Account.create!(
-      :shopify_account_urlL => "MyString",
+      :shopify_account_url => "MyString",
+      :shopify_shared_secret => "MyString",
       :shopify_api_key => "MyString",
-      :shopify_shared_secret => "MyString"
+      :shopify_password => "MyString"
     ))
   end
 
@@ -14,11 +15,13 @@ RSpec.describe "accounts/edit", type: :view do
 
     assert_select "form[action=?][method=?]", account_path(@account), "post" do
 
-      assert_select "input[name=?]", "account[shopify_account_urlL]"
+      assert_select "input[name=?]", "account[shopify_account_url]"
+
+      assert_select "input[name=?]", "account[shopify_shared_secret]"
 
       assert_select "input[name=?]", "account[shopify_api_key]"
 
-      assert_select "input[name=?]", "account[shopify_shared_secret]"
+      assert_select "input[name=?]", "account[shopify_password]"
     end
   end
 end

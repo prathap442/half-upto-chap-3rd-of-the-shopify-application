@@ -10,15 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_07_061517) do
+ActiveRecord::Schema.define(version: 2018_05_07_064252) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "accounts", force: :cascade do |t|
     t.string "shopify_account_url"
-    t.string "shopify_api_key"
     t.string "shopify_shared_secret"
+    t.string "shopify_api_key"
+    t.string "shopify_password"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
