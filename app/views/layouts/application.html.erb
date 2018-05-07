@@ -62,7 +62,8 @@
           <%= bootstrap_flash %>
           <%= yield %>
         </div>
-        <!-- <div class="col-lg-3">
+        <br/><br/><br/>
+        <div class="col-lg-3">
           <div class="well sidebar-nav">
             <h3>Sidebar</h3>
             <ul class="nav nav-list">
@@ -72,7 +73,7 @@
               <li><%= link_to "Link3", "/path3"  %></li>
             </ul>
           </div><!--/.well -->
-        </div> --><!--/span-->
+        </div> <!--/span-->
       </div><!--/row-->
 
       <footer>
@@ -89,3 +90,8 @@
     </div><!--/.nav-collapse -->
   </body>
 </html>
+<ul class="nav">
+  <li><%= link_to "Products", products_path %></li>
+  <li><%= link_to "Orders", orders_path %></li>
+  <li><%= link_to "Accounts", accounts_path %></li>
+</ul>

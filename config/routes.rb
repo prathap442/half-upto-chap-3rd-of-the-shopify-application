@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   
+  resources :order_items
+  resources :orders
   get '/products/import',to: "products#import"
   
   resources :variants
