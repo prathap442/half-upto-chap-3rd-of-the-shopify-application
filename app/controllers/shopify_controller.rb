@@ -4,8 +4,8 @@ class ShopifyController < ApplicationController
   skip_before_action :require_login
   skip_before_action :verify_authenticity_token
   
-  #SHOPIFY_API_KEY="50a5d25b196006b2dcbd4843c8e65ead"
-  #SHOPIFY_SHARED_SECRET="cf353e6985c34c14d890586ad735bfeb"
+  SHOPIFY_API_KEY="50a5d25b196006b2dcbd4843c8e65ead"
+  SHOPIFY_SHARED_SECRET="cf353e6985c34c14d890586ad735bfeb"
 
   def authorize
 
@@ -14,7 +14,7 @@ class ShopifyController < ApplicationController
     end
 
     # Redirect to the authorization page
-    redirect_to "https://#{params[:shop].gsub(".myshopify.com","")}.myshopify.com/admin/oauth/authorize?client_id=#{SHOPIFY_API_KEY}&"#redirect_uri=https://550c4f15.ngrok.io/auth/shopify/callback&scope=read_products,read_orders,read_customers"
+    redirect_to "https://#{params[:shop].gsub(".myshopify.com","")}.myshopify.com/admin/oauth/authorize?client_id=#{SHOPIFY_API_KEY}&redirect_uri=https://550c4f15.ngrok.io/auth/shopify/callback&scope=read_products,read_orders,read_customers"
 
   end
 

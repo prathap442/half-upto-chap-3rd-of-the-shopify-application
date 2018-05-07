@@ -1,12 +1,14 @@
 class ShopifyIntegration
+  SHOPIFY_API_KEY="50a5d25b196006b2dcbd4843c8e65ead"
+  SHOPIFY_SHARED_SECRET="cf353e6985c34c14d890586ad735bfeb"
 
   attr_accessor :url, :password, :account_id
 
-  def initialize(params)
+  def initialize(params) 
+   
     # Ensure that all the parameters are passed in
     %w{url password account_id}.each do |field|
       raise ArgumentError.new("params[:#{field}] is required") if params[field.to_sym].blank?
-
       # If present, then set as an instance variable
       instance_variable_set("@#{field}", params[field.to_sym])
     end
@@ -172,8 +174,8 @@ class ShopifyIntegration
           # Otherwise, create it
           product = Product.new(last_shopify_sync: DateTime.now,
                                 name: shopify_product.title,
-                                shopify_product_id: shopify_product.id,
-                                account_id: @account_id
+                                shopify_product_id: shopify_product.id
+                                #account_id: Account.first.id
                                 )
           unless product.save
             failed += 1
@@ -196,6 +198,7 @@ class ShopifyIntegration
           else
             # Otherwise create it
             if Variant.create(sku: shopify_variant.sku, barcode: shopify_variant.barcode, option1: shopify_variant.option1, option2: shopify_variant.option2, option3: shopify_variant.option3, product_id: product.id, shopify_variant_id: shopify_variant.id, price: shopify_variant.price, last_shopify_sync: DateTime.now)
+           
               created += 1
             else
               failed += 1

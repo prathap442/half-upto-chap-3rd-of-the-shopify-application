@@ -1,13 +1,33 @@
 Rails.application.routes.draw do
-  get "sessions/new"
-  post "sessions/create"
-  get "sessions/destroy"
+  
+  get '/products/import',to: "products#import"
+  
+  resources :variants
+  resources :products
+  
+  resources :products do
+  collection do
+  get 'import'
+  end
+  resources :variants
+  end
+
+
+
+  #get "sessions/new"
+  #post "sessions/create"
+  #get "sessions/destroy"
+  
+
   resources :accounts do
 	member do
 	  get 'test_connection'
 	end
   end
   resources :accounts
+  
+  
+
   get 'dashboard/index'
   root 'dashboard#index'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
   helper_method :current_account, :logged_in?
-  before_action :require_login
+  #before_action :require_login
 
   ### Filters ###
   # This method is called before each controller action is
