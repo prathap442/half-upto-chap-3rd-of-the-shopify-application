@@ -1,6 +1,5 @@
 class AccountsController < ApplicationController
   before_action :set_account, only: [:show, :edit, :update, :destroy]
-
   # GET /accounts
   # GET /accounts.json
   def index
@@ -40,16 +39,30 @@ class AccountsController < ApplicationController
   # PATCH/PUT /accounts/1
   # PATCH/PUT /accounts/1.json
   def update
-    respond_to do |format|
-      if @account.update(account_params)
-        format.html { redirect_to @account, notice: 'Account was successfully updated.' }
-        format.json { render :show, status: :ok, location: @account }
+    # See if they are upgrading to Paid
+    shopify_service = ShopifyIntegration.new(url: @account.shopify_account_url,
+                                             password: @account.shopify_password,
+                                             account_id: @account.id)
+
+    shopify_service.connect
+    if params[:account][:paid] == true || params[:account][:paid].to_i == 1
+      if @account.paid?
+        render 'edit'
       else
-        format.html { render :edit }
-        format.json { render json: @account.errors, status: :unprocessable_entity }
+        # TODO: set the flag to false to really charge the card
+        redirect_to shopify_service.create_charge(1, true)
       end
+    else
+      # If not, just re-render the form
+      if shopify_service.delete_charge(@account.charge_id)
+        puts "asdfasdfsdfasdfsdfasdfsdfsdf"
+        @account.update_attribute(:paid, false)
+      end
+
+      render 'edit'
     end
   end
+
 
   # DELETE /accounts/1
   # DELETE /accounts/1.json
@@ -64,7 +77,7 @@ class AccountsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_account
-      @account = Account.find(params[:id])
+      @account = current_account
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
