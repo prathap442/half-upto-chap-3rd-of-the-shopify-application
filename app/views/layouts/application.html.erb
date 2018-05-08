@@ -8,6 +8,7 @@
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag "application", :media => "all" %>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <%#=current_path%>
     <!-- For third-generation iPad with high-resolution Retina display: -->
     <!-- Size should be 144 x 144 pixels -->
@@ -95,3 +96,23 @@
   <li><%= link_to "Orders", orders_path %></li>
   <li><%= link_to "Accounts", accounts_path %></li>
 </ul>
+
+<div class="row-fluid">
+   <% if content_for?(:sidebar) %>
+      <div class="span3">
+         <div class="well sidebar-nav">
+            <%= yield(:sidebar) %>
+         </div>
+      </div>
+      <div class="span9">
+         <%= bootstrap_flash %>
+             <%= yield %>
+      </div>
+    <% else %>
+      <div class="span12">
+          <%= bootstrap_flash %>
+          <%= yield %>
+      </div>
+    <% end %>
+</div>
+  
