@@ -10,6 +10,7 @@ class OrdersController < ApplicationController
   # GET /orders/1
   # GET /orders/1.json
   def show
+    @order = Order.find(params[:id])
   end
 
   # GET /orders/new
@@ -20,6 +21,27 @@ class OrdersController < ApplicationController
   # GET /orders/1/edit
   def edit
   end
+
+  def import
+    binding.pry
+    account= Account.first    # Con.nect to Shopify.shoo.id
+    #shopify_integration = ShopifyIntegration.new(url: current_account.shopify_account_url,password: current_account.shopify_password,account_id: current_account.id)
+    shopify_integration = ShopifyIntegration.new(url: account.shopify_account_url,password: account.shopify_password,api_key: account.shopify_api_key,shared_secret: account.shopify_shared_secret)
+    binding.pry
+    respond_to do |format|
+      if shopify_integration.connect
+        # Import Products to ensure we are up to date
+        shopify_integration.import_products
+        result = shopify_integration.import_orders
+        format.html { redirect_to ({action: :index}), notice: "#{result[:created].to_i} created, #{result[:failed]} failed." }
+        format.json { render json: "#{result[:created].to_i} created, #{result[:failed]} failed." }
+      else
+        format.html { redirect_to ({action: :index}), alert: "Unable to connect to Shopify" }
+        format.json { render json: "Unable to connect to Shopify", status: :unprocessable_entity }
+      end
+    end
+  end  
+ 
 
   # POST /orders
   # POST /orders.json
@@ -60,6 +82,25 @@ class OrdersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def prathap_imports
+    binding.pry
+    account= Account.first    # Con.nect to Shopify.shoo.id
+    #shopify_integration = ShopifyIntegration.new(url: current_account.shopify_account_url,password: current_account.shopify_password,account_id: current_account.id)
+    shopify_integration = ShopifyIntegration.new(url: account.shopify_account_url,password: account.shopify_password,api_key: account.shopify_api_key,shared_secret: account.shopify_shared_secret)
+    binding.pry
+    respond_to do |format|
+      if shopify_integration.connect
+        # Import Products to ensure we are up to date
+        result = shopify_integration.import_orders
+        format.html { redirect_to ({action: :index}), notice: "#{result[:created].to_i} created, #{result[:failed]} failed." }
+        format.json { render json: "#{result[:created].to_i} created, #{result[:failed]} failed." }
+      else
+        format.html { redirect_to ({action: :index}), alert: "Unable to connect to Shopify" }
+        format.json { render json: "Unable to connect to Shopify", status: :unprocessable_entity }
+      end
+    end
+  end  
 
   private
     # Use callbacks to share common setup or constraints between actions.

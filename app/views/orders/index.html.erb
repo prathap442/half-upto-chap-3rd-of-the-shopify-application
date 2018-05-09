@@ -32,10 +32,8 @@
         <td><%= order.financial_status %></td>
         <td><%=l order.created_at %></td>
         <td>
-          <%= link_to t('.show', :default => t("helpers.links.show")),
-                      order_path(order), :class => 'btn btn-default btn-xs' %>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_order_path(order), :class => 'btn btn-default btn-xs' %>
+          <%= link_to t('.show', :default => t("helpers.links.show")),order_path(order), :class => 'btn btn-default btn-xs' %>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),edit_order_path(order), :class => 'btn btn-default btn-xs' %>
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                       order_path(order),
                       :method => :delete,
@@ -47,7 +45,4 @@
   </tbody>
 </table>
 
-<%= link_to t('.new', :default => t("helpers.links.new")),
-            new_order_path,
-            :class => 'btn btn-primary' %>
-#Actually in the order index page we dont require shopify_order_id for the customer interface
+<%= link_to t('.new', :default => t("helpers.links.new")), new_order_path,:class => 'btn btn-primary' %>

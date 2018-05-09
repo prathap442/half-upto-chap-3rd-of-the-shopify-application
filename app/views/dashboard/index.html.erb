@@ -1,7 +1,54 @@
 <h1>Dashboard#index</h1>
 <p>Find me in app/views/dashboard/index.html.erb</p>
-<%- content_for :sidebar do-%>
-	<h4>Welcome!</h4>
-	<p>This is the Dashboard for your account. You'll be able to
-	view past contest results, as well as create new ones.</p>
+<%- content_for :sidebar do -%>
+<h4>New Contest</h4>
+<p>Use the form below to run a new Contest. Fields marked
+with * are required.</p>
+  <form action="<%= dashboard_create_contest_path%>" method='post'>
+		<div class="control-group">
+			<label for="name">Contest Name *</label>
+			<div class="controls">
+				<input type="text" class="text_field" id="name" class="name" required/>
+				<input type="hidden" id="name" class="text_field" value="Pickacho">
+			</div>
+		</div>
+		<div class="control-group">
+			<label for="name">Type *</label>
+			<div class="controls">
+				<select id="product_id" name="product_id" required>
+					<option>Any Product</option>
+					<optgroup label="Specific Product">
+						<%Product.all.limit(10).each do |product|%>
+						<option id="product_id"><%=product.shopify_product_id%></option>
+						<%end%>
+					</optgroup>
+				</select>
+			</div>
+		</div>
+		<div class="control-group">
+			<label for="name">Order Date Range (optional)</label>
+			<div class="controls">
+				<input type="text" class="text_field" id="start_date" name="start_date"/> to
+				<input type="text" class="text_field" id="end_date" name="end_date"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label for="name">Max # (optional)</label>
+			<div class="controls">
+				<input type="text" class="text_field" id="max_results" name="max_results"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label for="name">Order (optional)</label>
+			<div class="controls">
+				<input type="text" class="text_field" id="order_id" name="order_id"/>
+			</div>
+		</div>
+		<div class="form-actions">
+			<input type="submit" value="Submit" class="btn"/>
+			<%= link_to t('.cancel', :default => t("helpers.links.cancel")), dashboard_index_path , :class => 'btn' %>
+		</div>
+	</form>
 <%- end -%>
+<%= link_to "import orders", "/orders/import" %>
+Hey u rae here

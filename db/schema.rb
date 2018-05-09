@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_07_154723) do
+ActiveRecord::Schema.define(version: 2018_05_08_114231) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,18 @@ ActiveRecord::Schema.define(version: 2018_05_07_154723) do
     t.string "shopify_password"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "contests", force: :cascade do |t|
+    t.string "name"
+    t.datetime "start_date"
+    t.bigint "product_id"
+    t.datetime "end_date"
+    t.integer "max_results"
+    t.integer "order_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_contests_on_order_id"
   end
 
   create_table "order_items", force: :cascade do |t|
@@ -43,13 +55,14 @@ ActiveRecord::Schema.define(version: 2018_05_07_154723) do
     t.string "email"
     t.string "first_name"
     t.string "last_name"
-    t.integer "shopify_order_id"
+    t.bigint "shopify_order_id"
     t.datetime "order_date"
     t.float "total"
     t.integer "line_item_count"
     t.string "financial_status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "order_shopify_string_id"
   end
 
   create_table "products", force: :cascade do |t|

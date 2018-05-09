@@ -5,6 +5,7 @@ class ShopifyIntegration
   attr_accessor :url, :password, :account_id
 
   def initialize(params) 
+    params[:account_id] = Account.first.id
    
     # Ensure that all the parameters are passed in
     %w{url password account_id}.each do |field|
@@ -101,43 +102,44 @@ class ShopifyIntegration
         order = Order.find_by_shopify_order_id(shopify_order.id)
 
         unless order.present?
-
+          count = 0
           # If not already imported, create a new order
-          order = Order.new(number: shopify_order.name,
+          order = Order.new(
+                            number: shopify_order.name,
                             email: shopify_order.email,
-                            first_name: shopify_order.billing_address.first_name,
-                            last_name: shopify_order.billing_address.last_name,
-                            shopify_order_id: shopify_order.id,
+                            first_name: ("a".."z").to_a.sample(5).join(""),
+                            last_name: ("a".."z").to_a.sample(5).join(""),
+                            shopify_order_id: count,
                             order_date: shopify_order.created_at,
                             total: shopify_order.total_price,
                             financial_status: shopify_order.financial_status,
-                            account_id: @account_id
-                            )
+                            order_shopify_string_id: shopify_order.id.to_s
+          )
 
           # Iterate through the line_items
           shopify_order.line_items.each do |line_item|
             variant = Variant.find_by_shopify_variant_id(line_item.variant_id)
             if variant.present?
+               if(order.errors.full_messages.length != 0)
+                  order.save
+                  created += 1
+               else
+                  failed += 1
+               end
               order.order_items.build(variant_id: variant.id,
                                       shopify_product_id: line_item.product_id,
                                       shopify_variant_id: line_item.id,
                                       quantity:  line_item.quantity,
-                                      unit_price: line_item.price)
+                                      unit_price: line_item.price)  
             end
-          end
-
-          if order.save
-            created += 1
-          else
-            failed += 1
-          end
+          end 
+          count+=1
         end
 
       end
 
       # Grab the next page of products
-      page += 1
-      shopify_orders = ShopifyAPI::Order.find(:all, params: {limit: 50, page: page})
+      shopify_orders = ShopifyAPI::Order.find(:all, params: {limit: 50, page: 2})
 
 
     end
